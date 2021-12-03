@@ -1016,7 +1016,8 @@ puzzle_input = %w[
   101001110110
 ]
 
-input_as_arrays = puzzle_input.map { |binary_number| binary_number.split("") }
+### PART 1 ###
+input_as_arrays = test_puzzle_input.map { |binary_number| binary_number.split("") }
 gamma = []
 epsilon = []
 input_as_arrays.first.each_with_index do |_, index|
@@ -1025,28 +1026,42 @@ input_as_arrays.first.each_with_index do |_, index|
   epsilon.push(bits.first.first)
   gamma.push(bits.last.first)
 end
-# row_1 = input_as_arrays.map { |row| row[0] }
-# row_2 = input_as_arrays.map { |row| row[1] }
-# row_3 = input_as_arrays.map { |row| row[2] }
-# row_4 = input_as_arrays.map { |row| row[3] }
-# row_5 = input_as_arrays.map { |row| row[4] }
-
-# # [["0", 5], ["1", 7]]
-# # first array is epsilon
-# # second array is gamma
-# first_bits = row_1.tally.sort_by { |_k, v| v } 
-# second_bits = row_2.tally.sort_by { |_k, v| v } 
-# third_bits = row_3.tally.sort_by { |_k, v| v } 
-# fourth_bits = row_4.tally.sort_by { |_k, v| v } 
-# fifth_bits = row_5.tally.sort_by { |_k, v| v } 
-
-# epsilon_value = first_bits.first.first + second_bits.first.first + third_bits.first.first + fourth_bits.first.first + fifth_bits.first.first
-# gamma_value = first_bits.last.first + second_bits.last.first + third_bits.last.first + fourth_bits.last.first + fifth_bits.last.first 
-
-# puts gamma_value
-# puts epsilon_value
 
 gamma_decimal = gamma.join.to_i(2)
 epsilon_decimal = epsilon.join.to_i(2)
+# puts gamma_decimal * epsilon_decimal 
 
-puts gamma_decimal * epsilon_decimal 
+### PART 2 ###
+input_as_arrays = puzzle_input.map { |binary_number| binary_number.split("") }
+co2_array = input_as_arrays.map(&:itself)
+oxygen_array = input_as_arrays.map(&:itself)
+oxygen_array.first.each_with_index do |_, index|
+  row = oxygen_array.map { |row| row[index] }
+  bits = row.tally.sort_by { |_k, v| v }
+
+  if bits.first.last == bits.last.last
+    oxygen_array.select! { |number_arr| number_arr[index] == "1"} unless oxygen_array.uniq.one?
+  else
+    oxygen_array.select! { |number_arr| number_arr[index] == bits.last.first } unless oxygen_array.uniq.one?
+  end
+end
+
+co2_array.first.each_with_index do |_, index|
+  row = co2_array.map { |row| row[index] }
+  bits = row.tally.sort_by { |_k, v| v }
+
+  if bits.first.last == bits.last.last
+    co2_array.select! { |number_arr| number_arr[index] == "0"} unless co2_array.uniq.one?
+  else
+    co2_array.select! { |number_arr| number_arr[index] == bits.first.first } unless co2_array.uniq.one?
+  end
+end
+
+co2_scrubber_rating_as_decimal = co2_array.join.to_i(2)
+oxygen_scrubber_rating_as_decimal = oxygen_array.join.to_i(2)
+puts co2_array.join
+puts oxygen_array.join
+puts co2_scrubber_rating_as_decimal
+puts oxygen_scrubber_rating_as_decimal
+puts co2_scrubber_rating_as_decimal * oxygen_scrubber_rating_as_decimal
+
