@@ -1059,4 +1059,29 @@ down 5
 up 4
 forward 5".split("\n")
 
-puts find_submarine_position(puzzle_input)
+# puts find_submarine_position(puzzle_input)
+
+def find_submarine_position_with_aim(puzzle_input)
+  formatted_directions = puzzle_input.map { |direction| direction.split(" ")}
+  aim = 0
+  horizontal_position = 0
+  depth = 0
+  formatted_directions.each do |direction|
+    command = direction.first
+    value = direction.last.to_i
+
+    case command
+    when "down"
+      aim += value
+    when "up"
+      aim -= value
+    when "forward"
+      horizontal_position += value
+      depth += value * aim
+    end
+  end
+
+  horizontal_position * depth # puzzle answer
+end
+
+puts find_submarine_position_with_aim(puzzle_input)
