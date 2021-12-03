@@ -5,16 +5,16 @@ def count_depth_measurement_increases(list_of_depths)
   larger_second_measurements.count
 end
 
-# test_puzzle_input = %w[199
-# 200
-# 208
-# 210
-# 200
-# 207
-# 240
-# 269
-# 260
-# 263]
+test_puzzle_input = %w[199
+200
+208
+210
+200
+207
+240
+269
+260
+263]
 
 # puts count_depth_measurement_increases(test_puzzle_input)
 
@@ -2019,5 +2019,14 @@ puzzle_input = %w[189
 6629
 6624]
 
-puts count_depth_measurement_increases(puzzle_input)
+# puts count_depth_measurement_increases(puzzle_input)
 
+def count_depth_measurement_increases_with_three_measurement_window(list_of_depths)
+  measurement_sums = list_of_depths.each_cons(3).map { |trio| trio.map(&:to_i).sum }
+  larger_second_sums = measurement_sums.each_cons(2).select do |pair|
+    pair[1].to_i > pair[0].to_i
+  end
+  larger_second_sums.count
+end
+
+puts count_depth_measurement_increases_with_three_measurement_window(puzzle_input)
